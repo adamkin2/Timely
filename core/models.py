@@ -2,26 +2,31 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.utils import timezone
 from datetime import timedelta
+from authentication.models import User
 # Create your models here.
+
+from schedule.models import Event, Rule
+
+
 class Course(models.Model):
     is_active = models.BooleanField(default=True)
     title = models.CharField(max_length=50)
-    created = models.DateTimeField(default=timezone.now())
-    start_date = models.DateTimeField(default=timezone.now())
-    end_date = models.DateTimeField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateField(auto_now_add=True)
+    end_date = models.DateField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     abbreviation = models.CharField(
         max_length=10,
-        default=self.set_abbr(),
         null=True,
         blank=True,
     )
-
     def set_abbr(self):
         if self.title is not None:
             return self.title[:9]
         else:
             return None
-            
+
+  
 class CourseItem(models.Model):
     HOMEWORK = 'HW'
     ASSESSMENT = 'AS'
@@ -57,7 +62,7 @@ class Contact(models.Model):
         blank=True,
         null=True
     )
-    email_address = model.CharField(max_length=100, blank=True, null=True)
+    email_address = models.CharField(max_length=100, blank=True, null=True)
 
     def set_name(self, name):
         self.full_name = name.title()

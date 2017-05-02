@@ -8,15 +8,7 @@ class SignUpForm(forms.Form):
     password = forms.PasswordInput(label='Password')
     password_check = forms.PasswordInput(label='Password again')
 
-    def check_matching_pw(self):
-        if self.password == self.password_check:
-            return self.password
-        else:
-            raise ValueError('Passwords do not match')
 
-    def check_existing_user(self):
-        if User.objects.get(email=self.email):
-            raise ValueError('User email address already exists.')
-        else:
-            return self.email
-            
+class SignInForm(forms.Form):
+    email = forms.EmailField(label='Email')
+    password = forms.PasswordInput(label='Password')

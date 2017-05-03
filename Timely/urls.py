@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from core.views import landing
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', landing, name='landing'),
-    url(r'^user/', include('authentication.urls'))
+    url(r'^$', include('core.urls')),
+    url(r'^user/', include('authentication.urls')),
 ]
